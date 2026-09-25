@@ -37,3 +37,11 @@ export interface MobileDrawerProps {
   planCount?: number;
   savedCount?: number;
 }
+
+export interface WorkoutCardProps {
+  workout: Workout;
+}
+
+export interface WorkoutGridProps {
+  workouts: Workout[];
+}
