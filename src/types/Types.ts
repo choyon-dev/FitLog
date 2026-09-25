@@ -45,3 +45,16 @@ export interface WorkoutCardProps {
 export interface WorkoutGridProps {
   workouts: Workout[];
 }
+
+export interface PlanCardProps {
+  workout: PlanItem;
+  isPlanTab: boolean;
+  onToggleDone?: (id: number) => void;
+  onRemove: (id: number) => void;
+}
+
+export interface PlanMetricsProps {
+  exercisesCount: number;
+  totalMinutes: number;
+  totalCalories: number;
+}
