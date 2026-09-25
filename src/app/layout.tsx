@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Oswald, Inter } from "next/font/google";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "@/components/nav/Header";
+import Footer from "@/components/footer/Footer";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -31,10 +33,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${oswald.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#090a0f] text-[#f4f4f6]">
-        {children}
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-[#090a0f] text-[#f4f4f6]"
+      >
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

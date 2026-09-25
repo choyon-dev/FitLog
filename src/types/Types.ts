@@ -19,3 +19,21 @@ export interface PlanItem extends Workout {
 }
 
 export type SortOption = "duration" | "caloriesBurned" | "rating";
+
+export interface HeaderProps {
+  planCount?: number;
+  savedCount?: number;
+}
+
+export interface NavHeaderActionProps {
+  onOpenDrawer: () => void;
+  planCount?: number;
+  savedCount?: number;
+}
+
+export interface MobileDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  planCount?: number;
+  savedCount?: number;
+}
