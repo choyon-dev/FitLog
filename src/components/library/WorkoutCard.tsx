@@ -2,12 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiClock, FiStar } from "react-icons/fi";
 import { FaFire } from "react-icons/fa6";
+import { toSlug } from "@/utils/slug";
 import type { WorkoutCardProps } from "@/types/Types";
 
 export default function WorkoutCard({ workout }: WorkoutCardProps) {
   return (
     <Link
-      href={`/workout/${workout.id}`}
+      href={`/workout/${toSlug(workout.name)}`}
       style={{ backgroundColor: "#13151b" }}
       className="rounded-2xl border border-[#1e232e] hover:border-[#ccff00]/60 p-4 transition-colors duration-200 cursor-pointer flex flex-col justify-between"
     >

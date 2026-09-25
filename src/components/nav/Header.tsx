@@ -5,10 +5,15 @@ import { DeskHeader } from "./DeskHeader";
 import { TabHeader } from "./TabHeader";
 import { MobileHeader } from "./MobileHeader";
 import MobileDrawer from "./MobileDrawer";
+import { useFitLog } from "@/context/FitLogContext";
 import type { HeaderProps } from "@/types/Types";
 
-export function Header({ planCount = 0, savedCount = 0 }: HeaderProps) {
+export function Header(props: HeaderProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const context = useFitLog();
+
+  const planCount = props.planCount ?? context.planCount;
+  const savedCount = props.savedCount ?? context.savedCount;
 
   return (
     <header className="sticky top-0 z-40 bg-[#090a0f] border-b border-[#1c202a]">

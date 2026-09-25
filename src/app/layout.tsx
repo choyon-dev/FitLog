@@ -4,6 +4,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "@/components/nav/Header";
 import Footer from "@/components/footer/Footer";
+import { FitLogProvider } from "@/context/FitLogContext";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -40,9 +41,11 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-full flex flex-col bg-[#090a0f] text-[#f4f4f6]"
       >
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <FitLogProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </FitLogProvider>
       </body>
     </html>
   );

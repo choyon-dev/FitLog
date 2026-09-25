@@ -119,14 +119,9 @@ export default function MobileDrawer({
                 <div style={{ backgroundColor: "#1c2813" }} className="w-8 h-8 rounded-lg flex items-center justify-center text-[#ccff00]">
                   <FiCalendar size={16} />
                 </div>
-                <div>
-                  <div className="text-sm font-medium text-white group-hover:text-[#ccff00] transition">
-                    Today&apos;s Plan
-                  </div>
-                  <div className="text-[11px] text-neutral-500">
-                    Max 5 active lifts
-                  </div>
-                </div>
+                <span className="text-sm font-medium text-white group-hover:text-[#ccff00] transition">
+                  Today&apos;s Plan
+                </span>
               </div>
               <span className="w-6 h-6 rounded-full bg-[#ccff00] text-black font-extrabold text-xs flex items-center justify-center">
                 {planCount}
@@ -143,14 +138,9 @@ export default function MobileDrawer({
                 <div style={{ backgroundColor: "#191d28" }} className="w-8 h-8 rounded-lg flex items-center justify-center text-neutral-300">
                   <FiBookmark size={16} />
                 </div>
-                <div>
-                  <div className="text-sm font-medium text-white group-hover:text-neutral-300 transition">
-                    Saved Lifts
-                  </div>
-                  <div className="text-[11px] text-neutral-500">
-                    Quick-access library
-                  </div>
-                </div>
+                <span className="text-sm font-medium text-white group-hover:text-neutral-300 transition">
+                  Saved Lifts
+                </span>
               </div>
               <span className="w-6 h-6 rounded-full border border-neutral-700 text-neutral-300 font-semibold text-xs flex items-center justify-center">
                 {savedCount}
