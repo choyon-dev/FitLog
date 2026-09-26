@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { FiChevronDown, FiSearch, FiX } from "react-icons/fi";
+import { FiChevronDown, FiSearch, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import WorkoutGrid from "./WorkoutGrid";
 import type { Workout, SortOption } from "@/types/Types";
 
@@ -11,6 +11,8 @@ export default function Library() {
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>("duration");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     async function fetchWorkouts() {
@@ -49,6 +51,16 @@ export default function Library() {
       return 0;
     });
   }, [workouts, searchQuery, sortBy]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, sortBy]);
+
+  const totalPages = Math.ceil(filteredAndSortedWorkouts.length / itemsPerPage) || 1;
+  const paginatedWorkouts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedWorkouts.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredAndSortedWorkouts, currentPage, itemsPerPage]);
 
   return (
     <section id="library" className="w-full py-8 sm:py-12 scroll-mt-20">
@@ -142,7 +154,45 @@ export default function Library() {
             </button>
           </div>
         ) : (
-          <WorkoutGrid workouts={filteredAndSortedWorkouts} />
+          <>
+            <WorkoutGrid workouts={paginatedWorkouts} />
+
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-10">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="p-2.5 rounded-xl border border-[#202532] bg-[#141720] text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#ccff00] hover:text-[#ccff00] transition cursor-pointer"
+                  aria-label="Previous page"
+                >
+                  <FiChevronLeft size={16} />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    style={{
+                      backgroundColor: currentPage === pageNum ? "#ccff00" : "#141720",
+                      color: currentPage === pageNum ? "#000000" : "#ffffff",
+                    }}
+                    className="w-10 h-10 rounded-xl border border-[#202532] text-xs font-bold transition cursor-pointer hover:border-neutral-500"
+                  >
+                    {pageNum}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="p-2.5 rounded-xl border border-[#202532] bg-[#141720] text-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#ccff00] hover:text-[#ccff00] transition cursor-pointer"
+                  aria-label="Next page"
+                >
+                  <FiChevronRight size={16} />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

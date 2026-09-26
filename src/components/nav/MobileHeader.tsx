@@ -38,7 +38,7 @@ export function MobileHeader({
 
         <div className="flex items-center gap-3">
           <Link
-            href="/my-plan"
+            href="/my-plan?tab=plan"
             className="flex items-center gap-1.5 cursor-pointer"
           >
             <span className="text-xs text-neutral-300 font-medium">Plan</span>
@@ -47,7 +47,7 @@ export function MobileHeader({
             </span>
           </Link>
           <Link
-            href="/my-plan"
+            href="/my-plan?tab=saved"
             className="flex items-center gap-1.5 cursor-pointer"
           >
             <span className="text-xs text-neutral-400 font-medium">Saved</span>

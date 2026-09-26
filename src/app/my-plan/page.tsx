@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { FiChevronDown, FiSearch, FiX } from "react-icons/fi";
 import { useFitLog } from "@/context/FitLogContext";
 import PlanMetrics from "@/components/plan/PlanMetrics";
@@ -8,11 +9,22 @@ import PlanCard from "@/components/plan/PlanCard";
 import EmptyPlan from "@/components/plan/EmptyPlan";
 import type { SortOption } from "@/types/Types";
 
-export default function MyPlanPage() {
+function MyPlanContent() {
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+
   const { plan, saved, removeFromPlan, toggleDone, removeFromSaved } = useFitLog();
   const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
   const [sortBy, setSortBy] = useState<SortOption>("duration");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (tabParam === "saved") {
+      setActiveTab("saved");
+    } else if (tabParam === "plan") {
+      setActiveTab("plan");
+    }
+  }, [tabParam]);
 
   const exercisesCount = plan.length;
   const totalMinutes = useMemo(
@@ -61,81 +73,76 @@ export default function MyPlanPage() {
           totalCalories={totalCalories}
         />
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-          <div
-            style={{ backgroundColor: "#13151b" }}
-            className="flex items-center border border-[#1e232e] rounded-xl p-1 self-start"
-          >
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mt-8 pb-4 border-b border-[#1c212d]">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setActiveTab("plan")}
               style={{
-                backgroundColor: activeTab === "plan" ? "#1e222d" : "transparent",
+                backgroundColor: activeTab === "plan" ? "#ccff00" : "#141720",
+                color: activeTab === "plan" ? "#000000" : "#ffffff",
               }}
-              className={`text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg transition cursor-pointer ${
-                activeTab === "plan"
-                  ? "text-white border border-[#2e3444] shadow-xs"
-                  : "text-neutral-400 hover:text-white"
-              }`}
+              className="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer border border-transparent hover:border-neutral-600"
             >
-              Today&apos;s Plan
+              Today&apos;s Plan ({plan.length})
             </button>
-
             <button
               onClick={() => setActiveTab("saved")}
               style={{
-                backgroundColor: activeTab === "saved" ? "#1e222d" : "transparent",
+                backgroundColor: activeTab === "saved" ? "#ccff00" : "#141720",
+                color: activeTab === "saved" ? "#000000" : "#ffffff",
               }}
-              className={`text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg transition cursor-pointer ${
-                activeTab === "saved"
-                  ? "text-white border border-[#2e3444] shadow-xs"
-                  : "text-neutral-400 hover:text-white"
-              }`}
+              className="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer border border-transparent hover:border-neutral-600"
             >
-              Saved
+              Saved Lifts ({saved.length})
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 self-start md:self-auto">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="relative flex-1 sm:w-64">
               <FiSearch
-                size={14}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none"
+                size={16}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500"
               />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search plan..."
-                style={{ backgroundColor: "#13151b" }}
-                className="bg-[#13151b] border border-[#1e232e] focus:border-[#ccff00] text-white text-xs rounded-xl pl-8 pr-7 py-2 focus:outline-none transition w-40 sm:w-48"
+                placeholder="Search plan or tag..."
+                style={{ backgroundColor: "#141720" }}
+                className="w-full pl-10 pr-9 py-2 rounded-xl text-xs text-white placeholder-neutral-500 border border-[#202532] focus:outline-none focus:border-[#ccff00] transition"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white cursor-pointer"
-                  aria-label="Clear search"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white cursor-pointer"
                 >
-                  <FiX size={13} />
+                  <FiX size={14} />
                 </button>
               )}
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-neutral-400 font-medium">Sort By:</span>
-              <div className="relative">
+            <div className="relative flex items-center">
+              <label
+                htmlFor="plan-sort"
+                className="text-xs text-neutral-400 mr-2 whitespace-nowrap"
+              >
+                Sort by:
+              </label>
+              <div className="relative inline-block">
                 <select
+                  id="plan-sort"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  style={{ backgroundColor: "#13151b" }}
-                  className="appearance-none bg-[#13151b] border border-[#1e232e] hover:border-neutral-500 text-white text-xs font-semibold rounded-xl pl-3 pr-7 py-2 cursor-pointer focus:outline-none focus:border-[#ccff00] transition"
+                  style={{ backgroundColor: "#141720" }}
+                  className="appearance-none pl-3 pr-8 py-2 rounded-xl text-xs text-white border border-[#202532] focus:outline-none focus:border-[#ccff00] transition cursor-pointer"
                 >
-                  <option value="duration">Duration</option>
-                  <option value="caloriesBurned">Calories</option>
-                  <option value="rating">Rating</option>
+                  <option value="duration">Duration (High-Low)</option>
+                  <option value="caloriesBurned">Calories (High-Low)</option>
+                  <option value="rating">Rating (High-Low)</option>
                 </select>
                 <FiChevronDown
-                  className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400"
-                  size={13}
+                  size={14}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none"
                 />
               </div>
             </div>
@@ -143,10 +150,10 @@ export default function MyPlanPage() {
         </div>
 
         {filteredAndSortedList.length === 0 ? (
-          searchQuery ? (
-            <div className="rounded-2xl border-2 border-dashed border-[#1e232e] py-16 px-6 text-center">
-              <p className="text-neutral-300 text-sm font-medium mb-3">
-                No exercises found in {activeTab === "plan" ? "Today's Plan" : "Saved"} matching &ldquo;{searchQuery}&rdquo;
+          searchQuery.trim() ? (
+            <div className="py-16 text-center">
+              <p className="text-neutral-400 text-sm mb-2">
+                No exercises found matching &quot;{searchQuery}&quot;
               </p>
               <button
                 onClick={() => setSearchQuery("")}
@@ -173,5 +180,19 @@ export default function MyPlanPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function MyPlanPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full py-12 min-h-screen container mx-auto px-4 text-neutral-400">
+          Loading plan...
+        </div>
+      }
+    >
+      <MyPlanContent />
+    </Suspense>
   );
 }

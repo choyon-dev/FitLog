@@ -54,7 +54,7 @@ export function DeskHeader({ planCount = 0, savedCount = 0 }: HeaderProps) {
 
         <div className="flex items-center gap-5">
           <Link
-            href="/my-plan"
+            href="/my-plan?tab=plan"
             className="flex items-center gap-2 group cursor-pointer"
           >
             <span className="text-sm text-neutral-300 font-medium group-hover:text-white transition-colors">
@@ -66,7 +66,7 @@ export function DeskHeader({ planCount = 0, savedCount = 0 }: HeaderProps) {
           </Link>
 
           <Link
-            href="/my-plan"
+            href="/my-plan?tab=saved"
             className="flex items-center gap-2 group cursor-pointer"
           >
             <span className="text-sm text-neutral-400 font-medium group-hover:text-neutral-200 transition-colors">

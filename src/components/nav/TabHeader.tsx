@@ -65,7 +65,7 @@ export function TabHeader({
 
         <div className="flex items-center gap-4">
           <Link
-            href="/my-plan"
+            href="/my-plan?tab=plan"
             className="flex items-center gap-2 cursor-pointer"
           >
             <span className="text-sm text-neutral-300 font-medium">Plan</span>
@@ -74,7 +74,7 @@ export function TabHeader({
             </span>
           </Link>
           <Link
-            href="/my-plan"
+            href="/my-plan?tab=saved"
             className="flex items-center gap-2 cursor-pointer"
           >
             <span className="text-sm text-neutral-400 font-medium">Saved</span>

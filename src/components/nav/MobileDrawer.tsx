@@ -110,7 +110,7 @@ export default function MobileDrawer({
             </div>
 
             <Link
-              href="/my-plan"
+              href="/my-plan?tab=plan"
               onClick={onClose}
               style={{ backgroundColor: "#141720" }}
               className="flex items-center justify-between p-3.5 border border-[#202532] rounded-xl hover:border-neutral-600 transition group"
@@ -129,7 +129,7 @@ export default function MobileDrawer({
             </Link>
 
             <Link
-              href="/my-plan"
+              href="/my-plan?tab=saved"
               onClick={onClose}
               style={{ backgroundColor: "#141720" }}
               className="flex items-center justify-between p-3.5 border border-[#202532] rounded-xl hover:border-neutral-600 transition group"
