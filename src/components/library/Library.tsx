@@ -19,7 +19,7 @@ export default function Library() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch("https://api.abcz.workers.dev/api/fitlog");
+        const res = await fetch("https://api.api-store.workers.dev/api/fitlog");
         if (!res.ok) throw new Error("Failed to load workout library");
         const data: Workout[] = await res.json();
         setWorkouts(data);

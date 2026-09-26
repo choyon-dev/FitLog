@@ -26,12 +26,12 @@ export default function WorkoutDetailsPage() {
         setError(null);
         const isNumeric = /^\d+$/.test(id);
         if (isNumeric) {
-          const res = await fetch(`https://api.abcz.workers.dev/api/fitlog/${id}`);
+          const res = await fetch(`https://api.api-store.workers.dev/api/fitlog/${id}`);
           if (!res.ok) throw new Error("Workout not found");
           const data: Workout = await res.json();
           setWorkout(data);
         } else {
-          const res = await fetch("https://api.abcz.workers.dev/api/fitlog");
+          const res = await fetch("https://api.api-store.workers.dev/api/fitlog");
           if (!res.ok) throw new Error("Workout not found");
           const allWorkouts: Workout[] = await res.json();
           const match = allWorkouts.find((w) => toSlug(w.name) === id);

@@ -8,16 +8,6 @@
   --accent: #ccff00;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card-bg);
-  --color-border: var(--card-border);
-  --color-accent: var(--accent);
-  --font-oswald: var(--font-oswald);
-  --font-inter: var(--font-inter);
-}
-
 html {
   scroll-behavior: smooth;
 }
