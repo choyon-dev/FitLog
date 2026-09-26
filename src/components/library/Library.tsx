@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiSearch, FiX } from "react-icons/fi";
 import WorkoutGrid from "./WorkoutGrid";
 import type { Workout, SortOption } from "@/types/Types";
 
@@ -10,6 +10,7 @@ export default function Library() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>("duration");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     async function fetchWorkouts() {
@@ -30,19 +31,29 @@ export default function Library() {
     fetchWorkouts();
   }, []);
 
-  const sortedWorkouts = useMemo(() => {
-    return [...workouts].sort((a, b) => {
+  const filteredAndSortedWorkouts = useMemo(() => {
+    let result = workouts;
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      result = result.filter(
+        (w) =>
+          w.name.toLowerCase().includes(q) ||
+          w.muscleGroups.some((g) => g.toLowerCase().includes(q)) ||
+          w.equipment.toLowerCase().includes(q)
+      );
+    }
+    return [...result].sort((a, b) => {
       if (sortBy === "duration") return b.duration - a.duration;
       if (sortBy === "caloriesBurned") return b.caloriesBurned - a.caloriesBurned;
       if (sortBy === "rating") return b.rating - a.rating;
       return 0;
     });
-  }, [workouts, sortBy]);
+  }, [workouts, searchQuery, sortBy]);
 
   return (
     <section id="library" className="w-full py-8 sm:py-12 scroll-mt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white uppercase font-display tracking-tight">
               THE LIBRARY
@@ -52,25 +63,51 @@ export default function Library() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="text-xs text-neutral-400 font-medium">
-              Sort By:
-            </span>
+          <div className="flex flex-wrap items-center gap-3 self-start md:self-auto">
             <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                style={{ backgroundColor: "#13151b" }}
-                className="appearance-none bg-[#13151b] border border-[#1e232e] hover:border-neutral-500 text-white text-xs font-semibold rounded-xl pl-3 pr-7 py-1.5 cursor-pointer focus:outline-none focus:border-[#ccff00] transition"
-              >
-                <option value="duration">Duration</option>
-                <option value="caloriesBurned">Calories</option>
-                <option value="rating">Rating</option>
-              </select>
-              <FiChevronDown
-                className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400"
-                size={13}
+              <FiSearch
+                size={14}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none"
               />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search name or muscle..."
+                style={{ backgroundColor: "#13151b" }}
+                className="bg-[#13151b] border border-[#1e232e] focus:border-[#ccff00] text-white text-xs rounded-xl pl-8 pr-7 py-2 focus:outline-none transition w-44 sm:w-56"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white cursor-pointer"
+                  aria-label="Clear search"
+                >
+                  <FiX size={13} />
+                </button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-neutral-400 font-medium">
+                Sort By:
+              </span>
+              <div className="relative">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  style={{ backgroundColor: "#13151b" }}
+                  className="appearance-none bg-[#13151b] border border-[#1e232e] hover:border-neutral-500 text-white text-xs font-semibold rounded-xl pl-3 pr-7 py-2 cursor-pointer focus:outline-none focus:border-[#ccff00] transition"
+                >
+                  <option value="duration">Duration</option>
+                  <option value="caloriesBurned">Calories</option>
+                  <option value="rating">Rating</option>
+                </select>
+                <FiChevronDown
+                  className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400"
+                  size={13}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -92,8 +129,20 @@ export default function Library() {
               Retry
             </button>
           </div>
+        ) : filteredAndSortedWorkouts.length === 0 ? (
+          <div className="rounded-2xl border-2 border-dashed border-[#1e232e] py-16 px-6 text-center">
+            <p className="text-neutral-300 text-sm font-medium mb-3">
+              No workouts found matching &ldquo;{searchQuery}&rdquo;
+            </p>
+            <button
+              onClick={() => setSearchQuery("")}
+              className="text-xs text-[#ccff00] font-bold hover:underline cursor-pointer"
+            >
+              Clear search
+            </button>
+          </div>
         ) : (
-          <WorkoutGrid workouts={sortedWorkouts} />
+          <WorkoutGrid workouts={filteredAndSortedWorkouts} />
         )}
       </div>
     </section>
