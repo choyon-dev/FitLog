@@ -6,8 +6,8 @@ FitLog is a modern, dark-themed workout companion built with Next.js and React. 
 
 ## 🔗 Project Links
 
-- **Live URL**: [Add your deployed Vercel / Netlify link here]
-- **GitHub Repository**: [Add your GitHub repository link here]
+- **Live URL**: [https://fit-log-bice-six.vercel.app/](https://fit-log-bice-six.vercel.app/)
+- **GitHub Repository**: [https://github.com/choyon-dev/FitLog](https://github.com/choyon-dev/FitLog)
 
 ---
 
@@ -48,7 +48,7 @@ Follow these steps to run FitLog on your computer:
 
 1. **Clone the repository**:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/choyon-dev/FitLog.git
    cd fitlog
    ```
 

@@ -18,7 +18,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FitLog — Workout Library & Training Tracker",
+  title: {
+    default: "FitLog — Workout Library & Training Tracker",
+    template: "%s | FitLog",
+  },
   description:
     "FitLog is a dark, no-nonsense gym companion: pick a lift, lock it into today's plan, and watch the week's work add up.",
   icons: {

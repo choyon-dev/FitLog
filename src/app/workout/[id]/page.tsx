@@ -48,6 +48,12 @@ export default function WorkoutDetailsPage() {
     fetchDetail();
   }, [id]);
 
+  useEffect(() => {
+    if (workout?.name) {
+      document.title = `${workout.name} | FitLog`;
+    }
+  }, [workout]);
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">

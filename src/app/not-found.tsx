@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { FiArrowLeft, FiCalendar } from "react-icons/fi";
+
+export const metadata: Metadata = {
+  title: "Page Not Found",
+  description: "The page you are looking for does not exist in the workout library.",
+};
 
 export default function NotFound() {
   return (
