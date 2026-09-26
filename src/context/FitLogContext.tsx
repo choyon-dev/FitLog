@@ -69,19 +69,18 @@ export function FitLogProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleDone = (id: number) => {
+    const target = plan.find((item) => item.id === id);
+    if (!target) return;
+    const nextCompleted = !target.completed;
+    if (nextCompleted) {
+      toast.success(`${target.name} marked as done!`);
+    } else {
+      toast.info(`${target.name} marked as incomplete`);
+    }
     setPlan((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          const nextCompleted = !item.completed;
-          if (nextCompleted) {
-            toast.success(`${item.name} marked as done!`);
-          } else {
-            toast.info(`${item.name} marked as incomplete`);
-          }
-          return { ...item, completed: nextCompleted };
-        }
-        return item;
-      })
+      prev.map((item) =>
+        item.id === id ? { ...item, completed: nextCompleted } : item
+      )
     );
   };
 
